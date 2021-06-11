@@ -1,0 +1,18 @@
+name = "hugoboot"
+license = "MIT"
+licenselink = "https://github.com/hieupth/hugoboot/blob/main/LICENSE"
+description = ""
+homepage = "https://github.com/hieupth/hugoboot"
+tags = []
+features = []
+min_version = "0.41.0"
+
+[author]
+  name = "Hieu Pham"
+  homepage = "https://github.com/hieupth"
+
+# If porting an existing theme
+[original]
+  name = ""
+  homepage = ""
+  repo = ""
