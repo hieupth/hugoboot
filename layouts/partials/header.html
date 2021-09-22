@@ -1,14 +1,16 @@
 <!-- Navigation Bar -->
-<nav class="navbar navbar-expand-lg navbar-light">
+<nav class="navbar navbar-expand-lg navbar-light navbar-container">
     <div class="container-fluid">
 
         <!-- Brand section -->
-        <a class="navbar-brand" href="{{ "/" | relURL}}">
+        <a class="navbar-brand d-flex align-items-center" href="{{ "/" | relURL}}">
             {{ if .Site.Params.brand.logo }}
-            <img src="{{ .Site.Params.Brand.logo }}" alt="{{ .Site.Params.description }}"/>
+            <img src="{{ .Site.Params.Brand.logo | relURL }}" alt="{{ .Site.Params.description }}" class="navbar-brand-img"/>
             {{ end }}
             {{ if .Site.Params.brand.title }}
-            {{ .Site.Params.brand.title }}
+            <div class="navbar-brand-name">
+                {{ .Site.Params.brand.title }}
+            </div>
             {{ end }}
         </a>
 
@@ -19,7 +21,7 @@
 
         <!-- Navigation menu -->
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ms-auto">
+            <ul class="navbar-nav ms-auto d-flex align-items-center">
                 {{ $currentPage := . }}
                 {{ range .Site.Menus.main }}
 
@@ -42,37 +44,34 @@
 
                 <!-- Otherwise simple make menu item -->
                 {{ else }}
-                <li class="navbar-item {{if or ($currentPage.IsMenuCurrent "main" .) ($currentPage.HasMenuCurrent "main" .) }} active{{end}}">
+                <li class="navbar-item ms-2 {{if or ($currentPage.IsMenuCurrent "main" .) ($currentPage.HasMenuCurrent "main" .) }} active{{end}}">
                     <a class="nav-link" href="{{ .URL | relLangURL }}">{{ .Name }}</a>
                 </li>
                 {{ end }}
                 {{ end }}
-
                 <!-- Language selector -->
-                {{ if len site.Languages | gt 1}}
-                <li class="navbar-item">
-                    <select id="select-language" class="nav-link" onchange="location = this.value;">
-                        {{ $siteLanguages := site.Languages }}
+                {{ if .Site.Languages}}
+                <li class="navbar-item ms-2">
+                        {{ $siteLanguages := .Site.Languages }}
                         {{ $pageLang := .Page.Lang }}
                         {{ $translations := "" }}{{ if eq .Page.Kind "404" }}{{ $translations = site.Home.AllTranslations }}{{ else }}{{ $translations = .Page.AllTranslations }}{{ end }}
                         {{ range $translations }}
-                        {{ $translation := . }}
-                        {{ range $siteLanguages }}
-                        {{ if eq $translation.Lang .Lang }}
-                        {{ $selected := false }}
-                        {{ if eq $pageLang .Lang }}
-                        <option id="{{ $translation.Language }}" value="{{ $translation.RelPermalink }}" selected>
-                            {{ .LanguageName }}
-                        </option>
-                        {{ else }}
-                        <option id="{{ $translation.Language }}" value="{{ $translation.RelPermalink }}">
-                            {{ .LanguageName }}
-                        </option>
+                            {{ $translation := . }}
+                            {{ range $siteLanguages }}
+                                {{ if eq $translation.Lang .Lang }}
+                                        {{ $selected := false }}
+                                    {{ if eq $pageLang .Lang }}
+                                        <a class="language-link" href="{{ $translation.RelPermalink }}">
+                                            <img class="language-img" src="{{.LanguageName | relURL}}" alt="">
+                                        </a>
+                                    {{ else }}
+                                        <a class="language-link" href="{{ $translation.RelPermalink }}">
+                                            <img class="language-img" src="{{.LanguageName | relURL}}" alt="">
+                                        </a>
+                                    {{ end }}
+                                {{ end }}
+                            {{ end }}
                         {{ end }}
-                        {{ end }}
-                        {{ end }}
-                        {{ end }}
-                    </select>
                 </li>
                 {{ end }}
             </ul>
